@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawrific News - Hudson Valley Paws for a Cause</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: white;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Color Variables */
+        :root {
+            --navy-blue: #001F3F;
+            --light-navy: #003366;
+            --gold-accent: #FFD700;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+        }
+        
+        /* Paw Print Animation */
+        .paw {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="30" cy="70" r="15" fill="%23001F3F" opacity="0.7"/><circle cx="70" cy="70" r="15" fill="%23001F3F" opacity="0.7"/><circle cx="50" cy="30" r="15" fill="%23001F3F" opacity="0.7"/><circle cx="20" cy="40" r="12" fill="%23001F3F" opacity="0.7"/><circle cx="80" cy="40" r="12" fill="%23001F3F" opacity="0.7"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: -1;
+            pointer-events: none;
+            animation: float 15s linear infinite;
+            opacity: 0;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-500px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* News Section Styles */
+        .news-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--navy-blue);
+            font-size: 2.5em;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--gold-accent);
+            margin: 15px auto 0;
+        }
+        
+        .news-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        .news-card {
+            background-color: var(--navy-blue);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            border: 2px solid var(--navy-blue);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            background-color: var(--light-navy);
+        }
+        
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gold-accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .news-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .news-image-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .news-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .news-card:hover .news-image {
+            transform: scale(1.1);
+        }
+        
+        .news-content {
+            padding: 25px;
+            position: relative;
+        }
+        
+        .news-date {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .news-date::before {
+            content: '📅';
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+        
+        .news-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .news-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--gold-accent);
+            transition: width 0.3s ease;
+        }
+        
+        .news-card:hover .news-title::after {
+            width: 100%;
+        }
+        
+        .news-excerpt {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 20px;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-right: 25px;
+        }
+        
+        .read-more::after {
+            content: '→';
+            position: absolute;
+            right: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .news-card:hover .read-more {
+            color: var(--gold-accent);
+        }
+        
+        .news-card:hover .read-more::after {
+            right: -5px;
+            transform: scale(1.3);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .news-container {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+                gap: 25px;
+            }
+            
+            .section-title {
+                font-size: 2em;
+                margin-bottom: 30px;
+            }
+            
+            .news-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Paws will be added by JavaScript -->
+    
+    <section class="news-section">
+        <h2 class="section-title">Pawrific News</h2>
+        
+        <div class="news-container">
+            <!-- News Item 1 -->
+            <a href="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/11/HVPFAC-November-2023-Newsletter.pdf" class="news-card">
+                <div class="news-image-container">
+                    <img src="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/11/2023-11-Newsletter-Cover-Photo-300x300.jpg" alt="November 2023 Newsletter" class="news-image">
+                </div>
+                <div class="news-content">
+                    <div class="news-date">November 2023</div>
+                    <h3 class="news-title">November Newsletter</h3>
+                    <p class="news-excerpt">Read about our latest rescue efforts, upcoming events, and how you can help make a difference in animals' lives.</p>
+                    <div class="read-more">Read Newsletter</div>
+                </div>
+            </a>
+            
+            <!-- News Item 2 -->
+            <a href="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/08/HVPFAC-August-2023-Newsletter.pdf" class="news-card">
+                <div class="news-image-container">
+                    <img src="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/08/August-2023-Newsletter-Cover-Photo-300x300.jpg" alt="August 2023 Newsletter" class="news-image">
+                </div>
+                <div class="news-content">
+                    <div class="news-date">August 2023</div>
+                    <h3 class="news-title">August Newsletter</h3>
+                    <p class="news-excerpt">Summer updates including our successful adoption events, volunteer spotlights, and urgent needs.</p>
+                    <div class="read-more">Read Newsletter</div>
+                </div>
+            </a>
+            
+            <!-- News Item 3 -->
+            <a href="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/05/HVPFAC-May-2023-Newsletter.pdf" class="news-card">
+                <div class="news-image-container">
+                    <img src="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/05/May-2023-Newsletter-Cover-Photo-300x300.jpg" alt="May 2023 Newsletter" class="news-image">
+                </div>
+                <div class="news-content">
+                    <div class="news-date">May 2023</div>
+                    <h3 class="news-title">May Newsletter</h3>
+                    <p class="news-excerpt">Spring edition featuring heartwarming adoption stories, upcoming fundraising events, and new arrivals.</p>
+                    <div class="read-more">Read Newsletter</div>
+                </div>
+            </a>
+            
+            <!-- News Item 4 -->
+            <a href="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/02/HVPFAC-February-2023-Newsletter.pdf" class="news-card">
+                <div class="news-image-container">
+                    <img src="https://hudsonvalleypawsforacause.org/wp-content/uploads/2023/02/February-2023-Newsletter-Cover-Photo-300x300.jpg" alt="February 2023 Newsletter" class="news-image">
+                </div>
+                <div class="news-content">
+                    <div class="news-date">February 2023</div>
+                    <h3 class="news-title">February Newsletter</h3>
+                    <p class="news-excerpt">Winter updates including Valentine's Day specials, volunteer opportunities, and our foster program highlights.</p>
+                    <div class="read-more">Read Newsletter</div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating paws
+            function createPaws() {
+                const pawCount = 12;
+                for (let i = 0; i < pawCount; i++) {
+                    const paw = document.createElement('div');
+                    paw.className = 'paw';
+                    
+                    // Random position and size
+                    const size = Math.random() * 20 + 15;
+                    const left = Math.random() * 100;
+                    const delay = Math.random() * 10;
+                    const duration = Math.random() * 10 + 10;
+                    
+                    paw.style.width = `${size}px`;
+                    paw.style.height = `${size}px`;
+                    paw.style.left = `${left}vw`;
+                    paw.style.bottom = `-50px`;
+                    paw.style.animationDelay = `${delay}s`;
+                    paw.style.animationDuration = `${duration}s`;
+                    
+                    document.body.appendChild(paw);
+                }
+            }
+            
+            createPaws();
+            
+            // Card entrance animation
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.news-card').forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease, box-shadow 0.3s ease';
+                observer.observe(card);
+            });
+            
+            // Click effect
+            document.querySelectorAll('.news-card').forEach(card => {
+                card.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateY(4px) scale(0.98)';
+                });
+                card.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-8px) scale(1)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // Add paw print on click
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.news-card')) return;
+                
+                const paw = document.createElement('div');
+                paw.className = 'paw';
+                paw.style.position = 'fixed';
+                paw.style.width = '40px';
+                paw.style.height = '40px';
+                paw.style.left = `${e.clientX - 20}px`;
+                paw.style.top = `${e.clientY - 20}px`;
+                paw.style.animation = 'pawClick 1s forwards';
+                paw.style.opacity = '0.8';
+                paw.style.zIndex = '1000';
+                
+                document.body.appendChild(paw);
+                
+                setTimeout(() => {
+                    paw.remove();
+                }, 1000);
+            });
+            
+            // Add CSS for click paw animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pawClick {
+                    0% { transform: scale(0.5); opacity: 0.8; }
+                    100% { transform: scale(1.5); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
